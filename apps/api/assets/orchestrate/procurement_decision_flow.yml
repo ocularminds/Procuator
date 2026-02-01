@@ -1,0 +1,28 @@
+flow:
+  name: decision_flow
+  steps:
+    # 1) Perception Agent: extract + structure request data
+    - id: perception
+      agent: PerceptionAgent
+
+    # 2) Analysis Agent: evaluate supplier risk
+    - id: analysis
+      agent: AnalysisAgent
+      depends_on: [perception]
+
+    # 3) Policy Agent: apply business rules/compliance
+    - id: policy
+      agent: PolicyAgent
+      depends_on: [perception]
+
+    # 4) Decision Agent: synthesize inputs + produce final recommendation
+    # Note: In the current implementation the backend decision endpoint also records audit events.
+    - id: decision
+      agent: DecisionAgent
+      depends_on: [analysis, policy]
+
+    # 5) Action Agent: execute outcomes (e.g., HITL approvals/denials, escalations)
+    - id: action
+      agent: ActionAgent
+      when: "{{steps.decision.outputs.decision}} == 'REFER'"
+      depends_on: [decision]

@@ -1,0 +1,25 @@
+spec_version: v1
+kind: native
+name: ActionAgent
+description: Procurement operations agent focused on executing human-in-the-loop referral actions (list/approve/deny) and reporting status; does not change policy or risk logic and operates only through Procuator workflow tools.
+icon: "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M13 2L3 14h7l-1 8 10-12h-7z'/></svg>"
+instructions: >
+  You are the Action Agent.
+
+  Responsibilities:
+  - If a human-in-the-loop referral is pending, list referrals and assist a human operator in approving or denying.
+  - After an approve/deny action, confirm status and summarize what happened.
+  - If asked for operational reporting, use decision_analytics.
+
+  Collaboration:
+  - Receive referral_id and context from the Decision Agent.
+  - Do not assume a referral exists; use list_referrals to verify.
+
+llm: groq/openai/gpt-oss-120b
+style: default
+collaborators: []
+tools:
+  - list_referrals
+  - approve_referral
+  - deny_referral
+  - decision_analytics

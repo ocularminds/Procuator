@@ -158,7 +158,6 @@ This repo includes a container build and GitHub Actions workflows intended for I
 ## Docs
 
 Higher-level narrative:
-- [procuator.md](procuator.md)
 - [architecture.md](architecture.md)
 - [workflow.md](workflow.md)
 - [engineering.md](engineering.md)

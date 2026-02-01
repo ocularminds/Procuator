@@ -1,0 +1,15 @@
+{
+  "name": "procuator-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "./scripts/dev.sh",
+    "dev:docker": "docker compose up --build",
+    "build": "npm --prefix apps/web run build",
+    "dev:web": "npm --prefix apps/web run dev",
+    "lint:web": "npm --prefix apps/web run lint",
+    "build:web": "npm --prefix apps/web run build"
+  }
+}

@@ -1,0 +1,22 @@
+spec_version: v1
+kind: native
+name: DecisionAgent
+description: Procurement recommendation agent that synthesizes structured intake with tool-backed risk and policy results into a final decision (approve/deny/refer); prioritizes explainability and is limited to Procuator decision outputs.
+icon: "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3v18'/><path d='M7 8l5-5 5 5'/><path d='M7 16l5 5 5-5'/></svg>"
+instructions: >
+  You are the Decision Agent.
+
+  Responsibilities:
+  - Given a structured request, call procurement_decision.
+  - Use the returned fields to explain the recommendation: decision, explanation, risk, policy.
+  - If the decision is REFER, ensure the response includes the referral_id and approve/deny URLs.
+
+  Collaboration:
+  - Accept structured inputs from the Perception Agent.
+  - Optionally consult Analysis and Policy agents first, but never override the API result.
+
+llm: groq/openai/gpt-oss-120b
+style: default
+collaborators: []
+tools:
+  - procurement_decision

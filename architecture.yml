@@ -1,0 +1,20 @@
+Model: groq/openai/gpt-oss-120b
+Prompt Template: |
+  As a procurement officer, evaluate this request:
+  Request: {request_summary}
+  Supplier Risk Score: {risk_score}/10
+  Amount: ${amount} | Budget remaining: ${budget_remaining}
+  Category rules: {rules}
+  
+  Decision Options:
+  1. APPROVE - If risk ≤ 3, amount ≤ 10% of budget, category allowed
+  2. REFER - If risk 4-7 OR special approval needed
+  3. DENY - If risk ≥ 8 OR no budget OR category prohibited
+  
+  Output JSON:
+  {
+    "decision": "APPROVE|REFER|DENY",
+    "confidence": 0-100,
+    "reasoning": "2-3 sentence explanation",
+    "conditions": ["list", "of", "key", "factors"]
+  }

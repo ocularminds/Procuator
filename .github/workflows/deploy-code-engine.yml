@@ -1,0 +1,80 @@
+name: Procuator Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install IBM Cloud CLI
+        run: |
+          curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+          ibmcloud version
+
+      - name: Login
+        env:
+          IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
+          IBM_CLOUD_REGION: ${{ secrets.IBM_CLOUD_REGION }}
+          IBM_CLOUD_RESOURCE_GROUP: ${{ secrets.IBM_CLOUD_RESOURCE_GROUP }}
+        run: |
+          ibmcloud login --apikey "$IBM_CLOUD_API_KEY" -r "$IBM_CLOUD_REGION" -g "$IBM_CLOUD_RESOURCE_GROUP"
+
+      - name: Ensure Code Engine plugin
+        run: |
+          ibmcloud plugin install code-engine -f
+
+      - name: Select Code Engine project
+        env:
+          CE_PROJECT: ${{ secrets.IBM_CLOUD_CODE_ENGINE_PROJECT }}
+        run: |
+          ibmcloud ce project select -n "$CE_PROJECT"
+
+      - name: Configure Container Registry
+        env:
+          ICR_REGION: ${{ secrets.IBM_CLOUD_ICR_REGION }}
+          ICR_NAMESPACE: ${{ secrets.IBM_CLOUD_ICR_NAMESPACE }}
+        run: |
+          # ICR region is not always same as IBM_CLOUD_REGION
+          ibmcloud plugin install container-registry -f
+          ibmcloud cr region-set "$ICR_REGION"
+          ibmcloud cr login
+          ibmcloud cr namespace-add "$ICR_NAMESPACE" || true
+
+      - name: Build and push image
+        env:
+          ICR_REGISTRY_HOST: ${{ secrets.IBM_CLOUD_ICR_REGISTRY_HOST }}
+          ICR_NAMESPACE: ${{ secrets.IBM_CLOUD_ICR_NAMESPACE }}
+          IMAGE_NAME: procuator
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          IMAGE="$ICR_REGISTRY_HOST/$ICR_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          docker build -t "$IMAGE" -f apps/api/Dockerfile apps/api
+          docker push "$IMAGE"
+
+      - name: Deploy to Code Engine
+        env:
+          CE_APP_NAME: ${{ secrets.IBM_CLOUD_CODE_ENGINE_APP_NAME }}
+        run: |
+          # Create app if it doesn't exist; otherwise update image
+          ibmcloud ce application get -n "$CE_APP_NAME" >/dev/null 2>&1 \
+            && ibmcloud ce application update -n "$CE_APP_NAME" --image "$IMAGE" \
+            || ibmcloud ce application create -n "$CE_APP_NAME" --image "$IMAGE" --port 8080
+
+      - name: Show app status
+        env:
+          CE_APP_NAME: ${{ secrets.IBM_CLOUD_CODE_ENGINE_APP_NAME }}
+        run: |
+          ibmcloud ce application get -n "$CE_APP_NAME"

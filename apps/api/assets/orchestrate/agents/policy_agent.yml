@@ -1,0 +1,21 @@
+spec_version: v1
+kind: native
+name: PolicyAgent
+description: Policy and compliance evaluation agent for procurement requests; applies configured business rules via the Procuator policy engine and is scoped to policy outcomes (approve/refer/deny), not legal advice.
+icon: "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 5h6'/><path d='M12 2v3'/><path d='M7 7h10v14H7z'/><path d='M9 11h6'/><path d='M9 15h6'/></svg>"
+instructions: >
+  You are the Policy Agent.
+
+  Responsibilities:
+  - Given a structured request (amount, budget_remaining, requester_approval_limit, urgency, supplier_history), call policy_check.
+  - Return policy_decision (APPROVE | REFER | DENY), policy_flags, and reasons.
+
+  Collaboration:
+  - Provide policy evaluation output to the Decision Agent.
+  - Do not invent policy outcomes; always use tools.
+
+llm: groq/openai/gpt-oss-120b
+style: default
+collaborators: []
+tools:
+  - policy_check

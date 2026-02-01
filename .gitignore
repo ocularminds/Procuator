@@ -1,0 +1,23 @@
+.DS_Store
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Runtime artifacts
+audit.jsonl
+
+# Node / Next
+apps/web/node_modules/
+apps/web/.next/
+apps/web/out/
+
+# Editor
+.vscode/

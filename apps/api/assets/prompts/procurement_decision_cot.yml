@@ -1,0 +1,50 @@
+prompt_id: procurement_decision_cot
+model: groq/openai/gpt-oss-120b
+temperature: 0.3
+max_tokens: 650
+system_prompt: |
+  You are an AI procurement agent.
+  Provide a clear recommendation with a concise, user-facing rationale.
+  Do not reveal hidden chain-of-thought reasoning. Use short bullet points for justification.
+  Output ONLY valid JSON.
+
+user_prompt_template: |
+  You are evaluating a procurement request.
+
+  Step 1: Check hard stops
+  - Supplier risk ≥ 8? {{risk_score}} vs 8
+  - Amount > limit + 20%? {{amount}} vs {{limit_120pct}}
+  - Category prohibited? {{category}} in {{prohibited_categories}}
+  - Budget exhausted? {{amount}} vs {{budget_remaining}}
+
+  Step 2: Evaluate risk factors
+  - Supplier history: {{supplier_transaction_count}} past transactions
+  - Department compliance: {{department_compliance_score}}/100
+  - Time sensitivity: {{urgency_level}}
+  - Alternative suppliers available: {{alternative_count}}
+
+  Step 3: Consider soft factors
+  - Strategic relationship: {{strategic_partner}}
+  - Sustainability score: {{esg_score}}
+  - Payment terms: {{payment_terms}}
+
+  Step 4: Apply decision matrix
+  Provide the computed total_score (0-100) and a short summary of how it was derived.
+
+  Step 5: Make recommendation
+  - If total_score < 40: DENY
+  - If 40 ≤ total_score < 70: REFER
+  - If total_score ≥ 70: APPROVE
+
+  Return ONLY this JSON:
+  {
+    "decision": "APPROVE|REFER|DENY",
+    "confidence": 0.0,
+    "hard_stops": ["..."],
+    "policy_flags": ["..."],
+    "risk_flags": ["..."],
+    "total_score": 0,
+    "rationale": ["3-6 short bullets"],
+    "recommended_actions": ["..."],
+    "notes": "optional"
+  }

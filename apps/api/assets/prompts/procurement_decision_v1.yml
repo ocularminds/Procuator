@@ -1,0 +1,63 @@
+prompt_id: procurement_decision_v1
+model: groq/openai/gpt-oss-120b
+temperature: 0.2
+max_tokens: 500
+system_prompt: |
+  You are a senior procurement officer with 20 years of experience.
+  You are meticulous, risk-averse, and always follow company policy.
+  You must output ONLY valid JSON, no other text.
+
+user_prompt_template: |
+  Analyze this procurement request and make a decision.
+
+  ### REQUEST DETAILS ###
+  Requester: {{requester_name}} (Department: {{department}})
+  Supplier: {{supplier_name}}
+  Amount: {{amount}} {{currency}}
+  Category: {{category}}
+  Description: {{description}}
+
+  ### CONTEXTUAL DATA ###
+  Supplier Risk Score: {{risk_score}}/10 ({{risk_reason}})
+  Department Budget Remaining: {{budget_remaining}}
+  Monthly Average Spend in Category: {{avg_spend}}
+  Requester's Approval Limit: {{requester_limit}}
+  Special Policy Flags: {{policy_flags}}
+
+  ### DECISION FRAMEWORK ###
+  Apply these rules in order:
+
+  1. HARD STOPS (AUTOMATIC DENY):
+     - Supplier risk ≥ 8
+     - Amount > requester's limit + 20%
+     - Category prohibited for department
+     - Budget exhausted
+
+  2. REFER TO MANAGER IF:
+     - Supplier risk 5-7
+     - Amount > requester's limit but ≤ 120%
+     - New supplier (no history)
+     - Category requires special approval
+
+  3. AUTO-APPROVE IF:
+     - Supplier risk ≤ 4
+     - Amount ≤ requester's limit
+     - Category approved
+     - Budget available
+     - Supplier has >5 past transactions
+
+  ### OUTPUT FORMAT ###
+  Return ONLY this JSON structure:
+
+  {
+    "decision": "APPROVE|REFER|DENY",
+    "confidence": 0.95,
+    "primary_reason": "Brief 1-line reason",
+    "detailed_reasoning": "Step-by-step analysis...",
+    "conditions_met": ["condition1", "condition2"],
+    "conditions_failed": ["condition1"],
+    "recommended_actions": ["action1", "action2"],
+    "risk_level": "LOW|MEDIUM|HIGH",
+    "policy_references": ["POL-401", "POL-412"],
+    "suggested_override": null
+  }

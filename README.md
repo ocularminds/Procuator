@@ -2,10 +2,13 @@
 
 Procurement decisioning reference implementation for IBM watsonx Orchestrate.
 
-<video width="640" height="360" auto>
-  <source src="procurate-orchestrate.mp4"   type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+## Demo video
+
+![Procuator demo](docs/screenshots/demo.gif)
+
+GitHub does not reliably render embedded HTML `<video>` tags (and autoplay is typically blocked), so the demo is shown as a GIF with the MP4 linked for higher quality:
+
+- Watch: [procurate-orchestrate.mp4](procurate-orchestrate.mp4)
 
 
 ## Demo (2–3 minutes)

@@ -2,6 +2,12 @@
 
 Procurement decisioning reference implementation for IBM watsonx Orchestrate.
 
+<video width="640" height="360" auto>
+  <source src="procurate-orchestrate.mp4"   type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
 ## Demo (2–3 minutes)
 
 1) Start the stack

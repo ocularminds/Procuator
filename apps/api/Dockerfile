@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir .
 
 EXPOSE 8080
 
-CMD uvicorn procuator.api.app:app --host 0.0.0.0 --port ${PORT}
+CMD uvicorn procuator.api.Application:app --host 0.0.0.0 --port ${PORT}

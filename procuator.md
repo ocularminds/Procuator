@@ -18,11 +18,11 @@ It provides an orchestrated decision pipeline that:
 - Supports human-in-the-loop review for referrals
 
 In this repo, the solution is delivered as:
-- A FastAPI service backend: [apps/api/src/procuator/api/app.py](apps/api/src/procuator/api/app.py)
+- A FastAPI service backend: [apps/api/src/procuator/api/Application.py](apps/api/src/procuator/api/Application.py)
 - Modular “skills” usable by the service/CLI:
-  - Risk checker: [apps/api/src/procuator/skills/supplier_risk_checker.py](apps/api/src/procuator/skills/supplier_risk_checker.py)
-  - Policy engine: [apps/api/src/procuator/skills/policy_engine.py](apps/api/src/procuator/skills/policy_engine.py)
-  - Audit + analytics: [apps/api/src/procuator/skills/decision_auditor.py](apps/api/src/procuator/skills/decision_auditor.py)
+  - Risk checker: [apps/api/src/procuator/features/risk/SupplierRiskChecker.py](apps/api/src/procuator/features/risk/SupplierRiskChecker.py)
+  - Policy engine: [apps/api/src/procuator/features/policy/PolicyEngine.py](apps/api/src/procuator/features/policy/PolicyEngine.py)
+  - Audit + analytics: [apps/api/src/procuator/features/decision/DecisionAuditor.py](apps/api/src/procuator/features/decision/DecisionAuditor.py)
 
 Outcome: consistent, repeatable decisions (and explanations) in seconds, with referrals routed to a human when required.
 
@@ -61,7 +61,7 @@ The structured rationale prompt is designed to produce an auditable explanation 
 ## Demo scenarios
 
 The demo includes three curated scenarios to show end-to-end behavior:
-- [apps/api/src/procuator/data/demo_scenarios.py](apps/api/src/procuator/data/demo_scenarios.py)
+- [apps/api/src/procuator/features/demo/DemoScenarios.py](apps/api/src/procuator/features/demo/DemoScenarios.py)
 
 They demonstrate:
 - Auto-approve

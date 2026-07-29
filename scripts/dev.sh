@@ -24,7 +24,7 @@ export API_BASE_URL="${API_BASE_URL:-http://127.0.0.1:8000}"
 
 echo "Starting API (uvicorn --reload) on http://127.0.0.1:8000 …"
 cd "$API_DIR"
-uvicorn procuator.api.app:app --host 127.0.0.1 --port 8000 --reload &
+uvicorn procuator.api.Application:app --host 127.0.0.1 --port 8000 --reload &
 API_PID=$!
 
 echo "Starting web (next dev) on http://127.0.0.1:3000 …"

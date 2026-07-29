@@ -13,12 +13,12 @@ Scope note: the system is designed to be tool-backed. Risk, policy, and decision
 ## Skills and responsibilities
 
 Skills are implemented as Python modules (callable from the API and CLI):
-- Supplier risk scoring: [apps/api/src/procuator/skills/supplier_risk_checker.py](apps/api/src/procuator/skills/supplier_risk_checker.py)
-- Policy evaluation (demo rules; policy can drive hard denies): [apps/api/src/procuator/skills/policy_engine.py](apps/api/src/procuator/skills/policy_engine.py)
-- Audit logging + analytics aggregation: [apps/api/src/procuator/skills/decision_auditor.py](apps/api/src/procuator/skills/decision_auditor.py)
+- Supplier risk scoring: [apps/api/src/procuator/features/risk/SupplierRiskChecker.py](apps/api/src/procuator/features/risk/SupplierRiskChecker.py)
+- Policy evaluation (demo rules; policy can drive hard denies): [apps/api/src/procuator/features/policy/PolicyEngine.py](apps/api/src/procuator/features/policy/PolicyEngine.py)
+- Audit logging + analytics aggregation: [apps/api/src/procuator/features/decision/DecisionAuditor.py](apps/api/src/procuator/features/decision/DecisionAuditor.py)
 
 The API orchestrates these skills and exposes HITL referral handling and analytics endpoints:
-- Service app: [apps/api/src/procuator/api/app.py](apps/api/src/procuator/api/app.py)
+- Service app: [apps/api/src/procuator/api/Application.py](apps/api/src/procuator/api/Application.py)
 
 Multi-agent mapping (Orchestrate): Perception focuses on intake/normalization, Analysis produces supplier risk assessments, Policy evaluates rules/compliance, Decision synthesizes outputs into APPROVE/REFER/DENY, and Action executes human-in-the-loop referral operations. Each stage is intentionally scoped to reduce ambiguity and improve evaluation of “which agent to use” for a given user intent.
 
@@ -29,7 +29,7 @@ Decisions are logged as JSONL events. You can control the audit log destination 
 ## Demo scenarios
 
 The demo is driven by three curated scenarios:
-- [apps/api/src/procuator/data/demo_scenarios.py](apps/api/src/procuator/data/demo_scenarios.py)
+- [apps/api/src/procuator/features/demo/DemoScenarios.py](apps/api/src/procuator/features/demo/DemoScenarios.py)
 
 They are intentionally tuned so:
 - The “complex referral” scenario always results in `REFER`.
@@ -40,4 +40,4 @@ They are intentionally tuned so:
 - Install: `pip install -e 'apps/api[dev]'`
 - Test: `pytest -q`
 - Lint/format: `ruff check .` and `ruff format --check .`
-- Run API: `cd apps/api && uvicorn procuator.api.app:app --host 127.0.0.1 --port 8000`
+- Run API: `cd apps/api && uvicorn procuator.api.Application:app --host 127.0.0.1 --port 8000`

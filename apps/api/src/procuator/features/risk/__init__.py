@@ -1,0 +1,1 @@
+"""Supplier risk assessment feature."""

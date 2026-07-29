@@ -61,16 +61,16 @@ This repo is a production-structured Python package (src-layout) that provides:
 ## What’s in the repo
 
 Skills (Python)
-- Supplier risk checker: [apps/api/src/procuator/skills/supplier_risk_checker.py](apps/api/src/procuator/skills/supplier_risk_checker.py)
-- Policy engine (demo rules): [apps/api/src/procuator/skills/policy_engine.py](apps/api/src/procuator/skills/policy_engine.py)
-- Decision auditor (JSONL + analytics): [apps/api/src/procuator/skills/decision_auditor.py](apps/api/src/procuator/skills/decision_auditor.py)
+- Supplier risk checker: [apps/api/src/procuator/features/risk/SupplierRiskChecker.py](apps/api/src/procuator/features/risk/SupplierRiskChecker.py)
+- Policy engine (demo rules): [apps/api/src/procuator/features/policy/PolicyEngine.py](apps/api/src/procuator/features/policy/PolicyEngine.py)
+- Decision auditor (JSONL + analytics): [apps/api/src/procuator/features/decision/DecisionAuditor.py](apps/api/src/procuator/features/decision/DecisionAuditor.py)
 
 API (FastAPI)
-- App: [apps/api/src/procuator/api/app.py](apps/api/src/procuator/api/app.py)
+- App: [apps/api/src/procuator/api/Application.py](apps/api/src/procuator/api/Application.py)
 
 Demo data
-- 3 core demo scenarios: [apps/api/src/procuator/data/demo_scenarios.py](apps/api/src/procuator/data/demo_scenarios.py)
-- Dataset generator: [apps/api/src/procuator/data/generator.py](apps/api/src/procuator/data/generator.py)
+- 3 core demo scenarios: [apps/api/src/procuator/features/demo/DemoScenarios.py](apps/api/src/procuator/features/demo/DemoScenarios.py)
+- Dataset generator: [apps/api/src/procuator/features/demo/DatasetGenerator.py](apps/api/src/procuator/features/demo/DatasetGenerator.py)
 
 watsonx Orchestrate assets
 - Flow example: [apps/api/assets/orchestrate/procurement_decision_flow.yml](apps/api/assets/orchestrate/procurement_decision_flow.yml)
@@ -106,7 +106,7 @@ Create and use the project venv:
 - `pip install -e 'apps/api[dev]'`
 
 Start the API:
-- `cd apps/api && uvicorn procuator.api.app:app --host 127.0.0.1 --port 8000`
+- `cd apps/api && uvicorn procuator.api.Application:app --host 127.0.0.1 --port 8000`
 
 Start the web UI:
 - `cd apps/web && cp .env.example .env.local`

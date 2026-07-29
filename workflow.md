@@ -14,11 +14,11 @@ The Orchestrate-ready flow definition lives in:
 ## How this maps to the local demo service
 
 The local FastAPI service implements the same stages and can be used as a backend for Orchestrate:
-- Service entrypoints and routing: [apps/api/src/procuator/api/app.py](apps/api/src/procuator/api/app.py)
+- Service entrypoints and routing: [apps/api/src/procuator/api/Application.py](apps/api/src/procuator/api/Application.py)
 - Skills used by the API:
-  - [apps/api/src/procuator/skills/supplier_risk_checker.py](apps/api/src/procuator/skills/supplier_risk_checker.py)
-  - [apps/api/src/procuator/skills/policy_engine.py](apps/api/src/procuator/skills/policy_engine.py)
-  - [apps/api/src/procuator/skills/decision_auditor.py](apps/api/src/procuator/skills/decision_auditor.py)
+  - [apps/api/src/procuator/features/risk/SupplierRiskChecker.py](apps/api/src/procuator/features/risk/SupplierRiskChecker.py)
+  - [apps/api/src/procuator/features/policy/PolicyEngine.py](apps/api/src/procuator/features/policy/PolicyEngine.py)
+  - [apps/api/src/procuator/features/decision/DecisionAuditor.py](apps/api/src/procuator/features/decision/DecisionAuditor.py)
 
 In the API, these map to:
 - Risk: `POST /risk-check`
@@ -31,5 +31,3 @@ In the API, these map to:
 - Call `POST /decision` for each case.
 - If a case returns `REFER`, show `GET /referrals`, then approve/deny via the referral endpoints.
 - Open `GET /dashboard` to show decision analytics.
-
-
